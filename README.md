@@ -1,21 +1,21 @@
-# sveve #
+# sveve
 A (limited) Python wrapper for Sveve's API
 
 Based on [API documentation](https://www.sveve.no/sms-api.jsp).
 
 I am in no way affiliated with Sveve and accept no liability for damages caused as a result of using this code.
 
-## Usage ##
+## Usage
 
 The client attempts to convert any error messages returned by Sveve to `HTTPExceptions` from the `requests` library.
 
-### Initialising client ###
+### Initialising client
 ```python
 from sveve.client import SveveClient
 client = SveveClient(user="usr", password="123", default_sender="funbit")
 ```
 
-### Sending an SMS ###
+### Sending an SMS
 ```python
 try:
   # Sending to one recipient using client's default_sender
@@ -32,7 +32,7 @@ client.send_sms(to=recipients, msg="Hello world!")
 client.send_sms(to="12345678", msg="Hello world!", sender="Your Name")
 ```
 
-### Checking remaining balance ###
+### Checking remaining balance
 ```python
 try:
   balance = client.remaining_sms()
