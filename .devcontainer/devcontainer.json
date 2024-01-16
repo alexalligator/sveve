@@ -1,0 +1,50 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
+{
+	"name": "Python 3",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/python:1-3.10-bullseye",
+	"features": {
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"[python]": {
+					"editor.defaultFormatter": "charliermarsh.ruff",
+					"editor.rulers": [
+						88
+					],
+					"editor.codeActionsOnSave": {
+						"source.fixAll": true,
+						"source.organizeImports": true
+					}
+				},
+				"python.defaultInterpreterPath": "/usr/local/bin/python",
+				"python.languageServer": "Pylance",
+				"python.analysis.typeCheckingMode": "basic",
+				"python.formatting.provider": "none",
+				"python.testing.pytestEnabled": true,
+				"python.testing.pytestPath": "python -m pytest",
+				"editor.formatOnSave": true,
+				"editor.bracketPairColorization.enabled": true
+			},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+				"ms-python.python",
+				"ms-python.vscode-pylance",
+				"charliermarsh.ruff",
+				"visualstudioexptteam.vscodeintellicode",
+				"github.vscode-pull-request-github",
+				"gitHub.copilot",
+				"GitHub.copilot-chat",
+				"mhutchie.git-graph",
+				"eamodio.gitlens",
+				"takumii.markdowntable",
+				"seatonjiang.gitmoji-vscode"
+			]
+		}
+	},
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "pip install requirements.txt && pip install --editable . "
+}
