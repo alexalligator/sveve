@@ -3,7 +3,7 @@
 {
 	"name": "Python 3",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/python:1-3.10-bullseye",
+	"image": "mcr.microsoft.com/devcontainers/python:1-3.11-bullseye",
 	"features": {
 		"ghcr.io/devcontainers/features/github-cli:1": {}
 	},
@@ -41,7 +41,8 @@
 				"mhutchie.git-graph",
 				"eamodio.gitlens",
 				"takumii.markdowntable",
-				"seatonjiang.gitmoji-vscode"
+				"seatonjiang.gitmoji-vscode",
+				"ms-vscode.makefile-tools"
 			]
 		}
 	},
