@@ -1,3 +1,4 @@
+import sys
 from dataclasses import dataclass
 
 import requests
@@ -123,3 +124,91 @@ class SveveClient:
             raise SveveError(data.response.fatalError)
 
         return data.response
+
+
+@dataclass(frozen=True, slots=True)
+class SveveConsoleClient:
+    stream = sys.stdout
+    default_sender: str
+
+    def remaining_sms(self) -> int:
+        balance = 1234
+        self.stream.write("-" * 79)
+        self.stream.write("\n")
+        self.stream.write("Printing (fake) remaining SMS to console...")
+        self.stream.write("\n")
+        self.stream.write(f"... balance: {balance}")
+        self.stream.write("\n")
+        self.stream.write("-" * 79)
+        self.stream.write("\n")
+        return balance
+
+    def send_sms(
+        self, to: str | list[str], msg: str, sender: str | None = None
+    ) -> SveveSendSMSData:
+        if isinstance(to, str):
+            to = [to]
+        if not sender:
+            sender = self.default_sender
+        self.stream.write("-" * 79)
+        self.stream.write("\n")
+        self.stream.write("Printing SMS to console...")
+        self.stream.write("\n")
+        self.stream.write(f"... sender: {sender or self.default_sender}")
+        self.stream.write("\n")
+        self.stream.write(f"... to: {to}")
+        self.stream.write("\n")
+        self.stream.write(f"... msg: {msg}")
+        self.stream.write("\n")
+        self.stream.write("-" * 79)
+        self.stream.write("\n")
+
+        num_recipients = len(to)
+
+        return SveveSendSMSData(
+            msgOkCount=num_recipients,
+            stdSMSCount=num_recipients,
+            ids=list(range(num_recipients)),
+            errors=None,
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class SveveMockClient:
+    """
+    A mock implementation of the SveveClient class to help you test your code.
+    """
+
+    remaining_sms_result: int | SveveError | None = None
+    send_sms_result: SveveSendSMSData | SveveError | None = None
+
+    def remaining_sms(self) -> int:
+        """
+        Returns the number of remaining SMS messages.
+        Raises SveveError if there is an error retrieving the count.
+        """
+        if self.remaining_sms_result is None:
+            raise ValueError(
+                "SveveMockClient must be initialised with a 'remaining_sms_result' "
+                "if you wish to call the 'remaining_sms()' method."
+            )
+        if isinstance(self.remaining_sms_result, SveveError):
+            raise self.remaining_sms_result
+        return self.remaining_sms_result
+
+    def send_sms(
+        self, to: str | list[str], msg: str, sender: str | None = None
+    ) -> SveveSendSMSData:
+        """
+        Sends an SMS message.
+        Returns the SveveSendSMSData object if successful.
+        Raises SveveError if there is an error sending the message.
+        """
+        if self.send_sms_result is None:
+            raise ValueError(
+                "SveveMockClient must be initialised with a 'send_sms_result' "
+                "if you wish to call the 'send_sms()' method."
+            )
+        if isinstance(self.send_sms_result, SveveError):
+            raise self.send_sms_result
+        return self.send_sms_result
