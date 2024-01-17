@@ -33,3 +33,4 @@ git_release:
 
 clean:
 	-rm -r build
+	-rm -r dist
