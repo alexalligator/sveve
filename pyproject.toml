@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Sveve"
+version = "1.0.0"
+description = "A (limited) Python wrapper for Sveve's SMS sending API"
+readme = "README.md"
+authors = [{ "name" = "Alex Simpson", "email" = "alex.simpson@funbit.no" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "requests >=2",
+    "pydantic >=2",
+]
+
+[project.urls]
+repository = "https://github.com/alexalligator/sveve"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = "."
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+addopts = "-n auto"
+
+[tool.ruff]
+src = ["src", "tests"]
+target-version = "py310"
+
+[tool.scriv]
+format = "md"
+version = "literal: pyproject.toml: project.version"

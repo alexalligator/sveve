@@ -1,0 +1,14 @@
+requests>=2,<3
+pydantic>=2,<3
+
+# for testing
+pytest
+pytest-xdist
+requests_mock
+
+# Releasing/building
+scriv
+build
+twine
+
+--editable .
