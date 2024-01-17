@@ -22,7 +22,7 @@ build:
 	python -m build
 
 upload:
-	python -m twine upload dist/* --skip-existing
+	python -m twine upload dist/* --skip-existing --username __token__ --password $(PYPI_TOKEN)
 
 git_release:
 	-git commit -a -m $(version)
