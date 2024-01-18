@@ -1,4 +1,15 @@
 
+<a id='changelog-1.1.0'></a>
+# 1.1.0 — 2024-01-18
+
+## Added
+
+- `outbox` added to `SveveMockClient` to store a history of sent messages.
+
+## Changed
+
+- `SveveMockClient` now uses successful results for `send_sms` and `remaining_sms` by default.
+
 <a id='changelog-1.0.0'></a>
 # 1.0.0 — 2024-01-17
 
