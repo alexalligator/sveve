@@ -1,5 +1,5 @@
 import sys
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 import requests
 from pydantic import BaseModel
@@ -174,13 +174,31 @@ class SveveConsoleClient:
 
 
 @dataclass(frozen=True, slots=True)
+class SveveOutboxItem:
+    """
+    A dataclass representing an item in the SveveMockClient outbox.
+    """
+
+    to: str | list[str]
+    msg: str
+    sender: str
+    result: SveveSendSMSData | SveveError
+
+
+@dataclass
 class SveveMockClient:
     """
     A mock implementation of the SveveClient class to help you test your code.
     """
 
-    remaining_sms_result: int | SveveError | None = None
-    send_sms_result: SveveSendSMSData | SveveError | None = None
+    default_sender: str
+    remaining_sms_result: int | SveveError | None = 1
+    send_sms_result: SveveSendSMSData | SveveError | None = field(
+        default_factory=lambda: SveveSendSMSData(msgOkCount=1, stdSMSCount=1, ids=[1])
+    )
+
+    # Store the sent messages in an outbox so that you can inspect them
+    outbox: list[SveveOutboxItem] = field(default_factory=list, init=False)
 
     def remaining_sms(self) -> int:
         """
@@ -209,6 +227,14 @@ class SveveMockClient:
                 "SveveMockClient must be initialised with a 'send_sms_result' "
                 "if you wish to call the 'send_sms()' method."
             )
+        self.outbox.append(
+            SveveOutboxItem(
+                to=to,
+                msg=msg,
+                sender=sender or self.default_sender,
+                result=self.send_sms_result,
+            )
+        )
         if isinstance(self.send_sms_result, SveveError):
             raise self.send_sms_result
         return self.send_sms_result
